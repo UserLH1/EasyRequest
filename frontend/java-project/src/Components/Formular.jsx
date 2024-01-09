@@ -49,6 +49,7 @@ export default function Formular() {
 
   const submitForm = () => {
     console.log(studentData);
+    // toast.success("Formularul a fost trimis cu succes!");
     fetch("http://localhost:8080/student/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
