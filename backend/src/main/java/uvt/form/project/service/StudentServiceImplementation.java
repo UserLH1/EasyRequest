@@ -1,7 +1,7 @@
-package com.form.project.service;
+package uvt.form.project.service;
 
-import com.form.project.model.Student;
-import com.form.project.repository.StudentRepository;
+import uvt.form.project.model.Student;
+import uvt.form.project.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

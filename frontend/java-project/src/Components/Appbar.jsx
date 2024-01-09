@@ -21,7 +21,7 @@ export default function Appar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Spring Boot React Application
+            Formular Burse Sociale
           </Typography>
         </Toolbar>
       </AppBar>

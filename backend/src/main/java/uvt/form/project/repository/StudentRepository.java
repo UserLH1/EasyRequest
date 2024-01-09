@@ -1,6 +1,6 @@
-package com.form.project.repository;
+package uvt.form.project.repository;
 
-import com.form.project.model.Student;
+import uvt.form.project.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,121 +1,92 @@
-import React, { useState } from 'react';
-import { Button, Container, Paper, TextField, Autocomplete } from "@mui/material";
+import { Button, Container, Paper } from "@mui/material";
 import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Student() {
-    const paperStyle = { padding: "50px 20px", width: 600, margin: "20px auto" };
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [studentId, setStudentId] = useState("");
-    const [faculty, setFaculty] = useState("");
-    const [specialization, setSpecialization] = useState("");
-    const [yearOfStudy, setYearOfStudy] = useState("");
-    const [recipient, setRecipient] = useState("");
-    const [purpose, setPurpose] = useState("");
-    const [requestDate, setRequestDate] = useState("");
-    // Presupunem că avem deja o listă de facultăți și specializări
-    const faculties = ["Facultatea de Informatică", "Facultatea de Matematică", "Facultatea de Biologie"];
-    const specializations = {
-        "Facultatea de Informatică": ["Informatică Aplicată", "Inteligenta Artificială"],
-        "Facultatea de Matematică": ["Matematică Pura", "Matematică Aplicată"],
-        "Facultatea de Biologie": ["Biologie Moleculară", "Ecologie"],
-    };
+  const paperStyle = { padding: "50px 20px", width: 600, margin: "20px auto" };
+  const [name, setName] = React.useState("");
+  const [adress, setAdress] = React.useState("");
+  const [students, setStudents] = React.useState([]);
 
-    // Restul codului a fost omis pentru claritate
-    // ...
+  const handleClick = (e) => {
+    e.preventDefault();
+    const student = { name, adress };
 
-    return (
-        <Container>
-            <ToastContainer />
-            <Paper elevation={3} style={paperStyle}>
-                <h1 style={{ color: "blue" }}>
-                    <u>Solicitari studenti</u>
-                </h1>
-                <Box
-                    component="form"
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        "& > :not(style)": { marginBottom: "20px" },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                >
-                    <TextField
-                        label="First Name"
-                        variant="outlined"
-                        onChange={(e) => setFirstName(e.target.value)}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Last Name"
-                        variant="outlined"
-                        onChange={(e) => setLastName(e.target.value)}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Student ID"
-                        variant="outlined"
-                        onChange={(e) => setStudentId(e.target.value)}
-                        fullWidth
-                    />
-                    <Autocomplete
-                        options={faculties}
-                        getOptionLabel={(option) => option}
-                        renderInput={(params) => <TextField {...params} label="Faculty" />}
-                        onChange={(event, value) => setFaculty(value)}
-                        fullWidth
-                    />
-                    {faculty && (
-                        <TextField
-                            select
-                            label="Specialization"
-                            value={specialization}
-                            onChange={(e) => setSpecialization(e.target.value)}
-                            SelectProps={{
-                                native: true,
-                            }}
-                            fullWidth
-                        >
-                            {specializations[faculty]?.map((option) => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </TextField>
-                    )}
-                    <TextField
-                        label="Year of Study"
-                        variant="outlined"
-                        onChange={(e) => setYearOfStudy(e.target.value)}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Recipient"
-                        variant="outlined"
-                        onChange={(e) => setRecipient(e.target.value)}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Purpose"
-                        variant="outlined"
-                        onChange={(e) => setPurpose(e.target.value)}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Request Date"
-                        type="date"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        onChange={(e) => setRequestDate(e.target.value)}
-                        fullWidth
-                    />
-                    <Button variant="contained" >
-                        Submit
-                    </Button>
-                </Box>
-            </Paper>
-        </Container>);}
+    fetch("http://localhost:8080/student/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(student),
+    })
+      .then(() => {
+        console.log("New Student added");
+        toast.success("Thank you for registering!"); // Display success toast
+      })
+      .catch((error) => {
+        console.error("Error adding student:", error);
+        toast.error("Failed to register."); // Display error toast
+      });
+  };
+
+  React.useEffect(() => {
+    fetch("http://localhost:8080/student/getAll")
+      .then((res) => res.json())
+      .then((result) => {
+        setStudents(result);
+      });
+  });
+
+  return (
+    <Container>
+      <ToastContainer />
+      <Paper elevation={3} style={paperStyle}>
+        <h1 style={{ color: "blue" }}>
+          <u>Add Student</u>
+        </h1>
+        <Box
+          component="form"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            "& > :not(style)": { marginBottom: "20px" }, // Adjust margin here
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined-basic"
+            label="Student Name"
+            variant="outlined"
+            onChange={(e) => setName(e.target.value)}
+            fullWidth
+          />
+          <TextField
+            id="outlined-basic"
+            label="Student Address"
+            variant="outlined"
+            onChange={(e) => setAdress(e.target.value)}
+            fullWidth
+          />
+          <Button variant="contained" onClick={handleClick}>
+            Submit
+          </Button>
+        </Box>
+      </Paper>
+      <Paper elevation={3} style={paperStyle}>
+        {students.map((student) => (
+          <Paper
+            elevation={6}
+            style={{ margin: "10px", padding: "15px", textAlign: "left" }}
+            key={student.id}
+          >
+            Id:{student.id}
+            <br></br> Name:{student.name}
+            <br /> Adress:{student.adress}
+          </Paper>
+        ))}
+      </Paper>
+    </Container>
+  );
+}

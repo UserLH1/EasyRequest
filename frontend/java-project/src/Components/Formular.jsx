@@ -1,30 +1,33 @@
-import * as React from 'react';
-import { Stepper, Step, StepLabel, Button, Typography } from '@mui/material';
-import FormularDatePersonale from '../Components/FormularDatePersonale';
-import FormularDetalii from '../Components/FormularDetalii';
-
+import { Button, Step, StepLabel, Stepper } from "@mui/material";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import FormularDatePersonale from "./FormularDatePersonale";
+import FormularDetalii from "./FormularDetalii";
 
 function getSteps() {
-  return ['Formular Date Personale', 'Formular Detalii Suplimentare'];
-}
-
-function getStepContent(stepIndex) {
-  switch (stepIndex) {
-    case 0:
-      return <FormularDatePersonale />;
-    case 1:
-      return <FormularDetalii />;
-    default:
-      return 'Unknown stepIndex';
-  }
+  return ["Formular Date Personale", "Formular Detalii Suplimentare"];
 }
 
 export default function Formular() {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
+  const [studentData, setStudentData] = useState({
+    nume: " ",
+    prenume: " ",
+    telefon: " ",
+    facultate: " ",
+    specializare: " ",
+    anulDeStudiu: " ",
+    numarMatricol: " ",
+  });
+  // console.log("Student data formular ", studentData);
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep === steps.length - 1) {
+      submitForm();
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
 
   const handleBack = () => {
@@ -33,7 +36,59 @@ export default function Formular() {
 
   const handleReset = () => {
     setActiveStep(0);
+    setStudentData({
+      nume: "",
+      prenume: "",
+      telefon: "",
+      facultate: "",
+      specializare: "",
+      anulDeStudiu: "",
+      numarMatricol: "",
+    });
   };
+
+  const submitForm = () => {
+    console.log(studentData);
+    fetch("http://localhost:8080/student/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(studentData),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();
+      })
+      .then((data) => {
+        toast.success("Formularul a fost trimis cu succes!");
+        console.log("Student added:", data);
+        handleReset(); // Optionally reset after submission
+      })
+      .catch((error) => {
+        toast.error("Eroare la trimiterea formularului.");
+        console.error("Error:", error);
+      });
+  };
+
+  function getStepContent(stepIndex) {
+    switch (stepIndex) {
+      case 0:
+        return (
+          <FormularDatePersonale
+            studentData={studentData}
+            setStudentData={setStudentData}
+          />
+        );
+      case 1:
+        return (
+          <FormularDetalii
+            studentData={studentData}
+            setStudentData={setStudentData}
+          />
+        );
+      default:
+        throw new Error("Unknown step");
+    }
+  }
 
   return (
     <div>
@@ -45,24 +100,13 @@ export default function Formular() {
         ))}
       </Stepper>
       <div>
-        {activeStep === steps.length ? (
-          <div>
-            <Typography>All steps completed</Typography>
-            <Button onClick={handleReset}>Reset</Button>
-          </div>
-        ) : (
-          <div>
-            <Typography>{getStepContent(activeStep)}</Typography>
-            <div>
-              <Button disabled={activeStep === 0} onClick={handleBack}>
-                Back
-              </Button>
-              <Button variant="contained" onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              </Button>
-            </div>
-          </div>
-        )}
+        {getStepContent(activeStep)}
+        <Button disabled={activeStep === 0} onClick={handleBack}>
+          Back
+        </Button>
+        <Button variant="contained" color="primary" onClick={handleNext}>
+          {activeStep === steps.length - 1 ? "Submit" : "Next"}
+        </Button>
       </div>
     </div>
   );

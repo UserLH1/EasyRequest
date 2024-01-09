@@ -1,4 +1,4 @@
-package com.form.project.model;
+package uvt.form.project.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

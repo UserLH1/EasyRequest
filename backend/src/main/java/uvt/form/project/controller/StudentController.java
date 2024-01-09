@@ -1,7 +1,7 @@
-package com.form.project.controller;
+package uvt.form.project.controller;
 
-import com.form.project.model.Student;
-import com.form.project.service.StudentService;
+import uvt.form.project.model.Student;
+import uvt.form.project.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

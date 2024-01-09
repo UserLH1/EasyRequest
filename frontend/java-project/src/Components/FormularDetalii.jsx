@@ -1,66 +1,106 @@
-import React, { useState, useEffect } from 'react';
-import { TextField, Autocomplete } from '@mui/material';
-import universities from '../universities.json';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+} from "@mui/material";
+import React, { useEffect } from "react";
+import universities from "../universities.json";
 
-export default function FormularDetalii() {
-  const [facultate, setFacultate] = useState('');
-  const [specializare, setSpecializare] = useState('');
-  const [anulDeStudiu, setAnulDeStudiu] = useState('');
-  const [numarMatricol, setNumarMatricol] = useState('');
-  const [facultati, setFacultati] = useState([]);
-  const [specializari, setSpecializari] = useState([]);
-
+export default function FormularDetalii({ studentData, setStudentData }) {
   useEffect(() => {
-    // Presupunând că universitățile sunt într-un format { 'Nume Facultate': ['Specializare1', 'Specializare2']}
-    setFacultati(Object.keys(universities['Universitatea de Vest din Timisoara']));
-  }, []);
+    setStudentData((prevData) => ({
+      ...prevData,
+      facultate: Object.keys(
+        universities["Universitatea de Vest din Timisoara"]
+      ),
+      specializari: [],
+    }));
+  }, [setStudentData]);
 
+  // UseEffect that updates the specializations based on the selected faculty
   useEffect(() => {
-    // Actualizați specializările când se schimbă facultatea
-    if (facultate) {
-      setSpecializari(universities['Universitatea de Vest din Timisoara'][facultate]);
+    if (studentData.facultate) {
+      const selectedSpecializations =
+        universities["Universitatea de Vest din Timisoara"][
+          studentData.facultate
+        ] || [];
+      setStudentData((prevData) => ({
+        ...prevData,
+        specializari: selectedSpecializations,
+        specializare: "", // Reset the specialization selection
+      }));
     }
-  }, [facultate]);
+  }, [studentData.facultate, setStudentData]);
 
-  // Restul logicilor formularului
+  // Handlers for form changes
+  const handleChange = (prop) => (event) => {
+    setStudentData({ ...studentData, [prop]: event.target.value });
+  };
 
   return (
-    <form noValidate autoComplete="off">
-      <Autocomplete
-        options={facultati}
-        getOptionLabel={(option) => option}
-        renderInput={(params) => <TextField {...params} label="Alegeți Facultatea" />}
-        value={facultate}
-        onChange={(event, newValue) => {
-          setFacultate(newValue);
-          setSpecializare(''); // Resetați specializarea atunci când se schimbă facultatea
-        }}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Specializarea"
-        value={specializare}
-        onChange={(e) => setSpecializare(e.target.value)}
-        fullWidth
-        margin="normal"
-        disabled={!facultate} // Dezactivați câmpul dacă nu este selectată nicio facultate
-      />
+    <Paper
+      elevation={3}
+      style={{ padding: "20px", margin: "20px auto", maxWidth: "800px" }}
+    >
+      <FormControl fullWidth margin="normal">
+        <InputLabel id="facultate-label">Facultate</InputLabel>
+        <Select
+          labelId="facultate-label"
+          id="facultate"
+          value={studentData.facultate || ""}
+          label="Facultate"
+          onChange={handleChange("facultate")}
+          fullWidth
+          margin="normal"
+        >
+          {Object.keys(universities["Universitatea de Vest din Timisoara"]).map(
+            (facultate, index) => (
+              <MenuItem key={index} value={facultate}>
+                {facultate}
+              </MenuItem>
+            )
+          )}
+        </Select>
+      </FormControl>
+
+      <FormControl fullWidth margin="normal" disabled={!studentData.facultate}>
+        <InputLabel id="specializare-label">Specializare</InputLabel>
+        <Select
+          labelId="specializare-label"
+          id="specializare"
+          value={studentData.specializare || ""}
+          label="Specializare"
+          onChange={handleChange("specializare")}
+          fullWidth
+          margin="normal"
+        >
+          {studentData.specializari &&
+            studentData.specializari.map((specializare, index) => (
+              <MenuItem key={index} value={specializare}>
+                {specializare}
+              </MenuItem>
+            ))}
+        </Select>
+      </FormControl>
+
       <TextField
         label="Anul de studiu"
-        value={anulDeStudiu}
-        onChange={(e) => setAnulDeStudiu(e.target.value)}
+        value={studentData.anulDeStudiu || ""}
+        onChange={handleChange("anulDeStudiu")}
         fullWidth
         margin="normal"
       />
+
       <TextField
         label="Număr Matricol"
-        value={numarMatricol}
-        onChange={(e) => setNumarMatricol(e.target.value)}
+        value={studentData.numarMatricol || ""}
+        onChange={handleChange("numarMatricol")}
         fullWidth
         margin="normal"
       />
-      {/* Restul câmpurilor și butoanele formularului */}
-    </form>
+    </Paper>
   );
 }
