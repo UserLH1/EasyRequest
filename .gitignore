@@ -18,7 +18,7 @@ backend/.idea
 backend/*.iws
 backend/*.iml
 backend/*.ipr
-
+backend/*.txt
 ### NetBeans ###
 /backend/nbproject/private/
 /backend/nbbuild/

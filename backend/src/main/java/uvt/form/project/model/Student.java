@@ -13,7 +13,7 @@ public class Student
     private int id;
     private String nume;
     private String prenume;
-    private int telefon;
+    private String telefon;
     private String criteriuBursa;
     private String facultate;
     private String specializare;
@@ -23,7 +23,7 @@ public class Student
     public Student() {
     }
 
-    public Student(int id, String nume, String prenume, int telefon, String criteriuBursa, String facultate, String specializare, int anulDeStudiu, String numarMatricol) {
+    public Student(int id, String nume, String prenume, String telefon, String criteriuBursa, String facultate, String specializare, int anulDeStudiu, String numarMatricol) {
         this.id = id;
         this.nume = nume;
         this.prenume = prenume;
@@ -59,11 +59,11 @@ public class Student
         this.prenume = prenume;
     }
 
-    public int getTelefon() {
+    public String getTelefon() {
         return telefon;
     }
 
-    public void setTelefon(int telefon) {
+    public void setTelefon(String telefon) {
         this.telefon = telefon;
     }
 
