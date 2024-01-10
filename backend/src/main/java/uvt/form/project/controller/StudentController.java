@@ -32,8 +32,4 @@ public class StudentController {
         return response;
     }
 
-    @GetMapping("/getAll")
-    public List<Student> getAllStudents() {
-        return studentService.getAllStudents();
-    }
 }

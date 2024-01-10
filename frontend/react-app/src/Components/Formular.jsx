@@ -118,7 +118,7 @@ export default function Formular() {
         {activeStep === steps.length - 1 ? (
           <div>
             <Button variant="contained" color="primary" onClick={handleNext}>
-              Submit
+              Trimite
             </Button>
             <br></br>
             <br></br>
@@ -128,7 +128,7 @@ export default function Formular() {
                 color="primary"
                 onClick={downloadCerereDeBursa}
               >
-                Download Cerere
+                Descarcă cererea
               </Button>
             )}
           </div>

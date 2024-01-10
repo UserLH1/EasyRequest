@@ -17,8 +17,4 @@ public class StudentServiceImplementation implements  StudentService
         return studentRepository.save(student);
     }
 
-    @Override
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
-    }
 }
