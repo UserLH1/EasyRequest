@@ -84,20 +84,15 @@ export default function FormularDetalii({ studentData, setStudentData }) {
             ))}
         </Select>
       </FormControl>
-      <Select
-        labelId="criteriu-bursa-label"
-        id="criteriu-bursa-select"
-        value={studentData.criteriuBursa || ""}
-        onChange={handleChange("criteriuBursa")}
+
+      <TextField
+        label="Anul de studiu"
+        value={studentData.anulDeStudiu || ""}
+        onChange={handleChange("anulDeStudiu")}
         fullWidth
         margin="normal"
-      >
-        {an.map((an, index) => (
-          <MenuItem key={index} value={an}>
-            {an}
-          </MenuItem>
-        ))}
-      </Select>
+      />
+
       <TextField
         label="Număr Matricol"
         value={studentData.numarMatricol || ""}
