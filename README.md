@@ -23,7 +23,7 @@ Aplicația dezvoltată este un instrument destinat studenților pentru facilitar
   - `StudentController`: Administrează cererile pentru entitatea `Student`.
 
 - **model**
-  - `Student`: Un model Java POJO care definește structura de date pentru entitățile student.
+  - `Student`: Un o clasa Java care definește structura de date pentru entitățile student.
 
 - **repository**
   - `StudentRepository`: Interfață pentru Spring Data JPA, care facilitează operațiuni CRUD pe entitățile Student.
@@ -31,13 +31,13 @@ Aplicația dezvoltată este un instrument destinat studenților pentru facilitar
 - **service**
   - `GenerareCerereBursa`: Conține logica pentru generarea cererilor de bursă.
   - `StudentService`: Interfața de service care definește metode pentru operațiuni legate de student.
-  - `StudentServiceImplementation`: Implementarea concretă a `StudentService`, care conține logica de afaceri.
+  - `StudentServiceImplementation`: Implementarea concretă a `StudentService`.
   - `ProjectApplication`: Clasa principală care rulează aplicația Spring Boot.
 
 ### Frontend (React)
 
 Interfața utilizator este construită folosind React, o bibliotecă JavaScript pentru construirea interfețelor de utilizator.
-Se presupune că interfața utilizator cuprinde formulare pentru introducerea și gestionarea datelor studentului, precum și butoane sau alte elemente pentru generarea și descărcarea cererilor de bursă.
+Interfața utilizatorilor cuprinde formulare pentru introducerea și gestionarea datelor studentului, precum și butoane sau alte elemente pentru generarea și descărcarea cererilor de bursă.
 React este folosit pentru a crea o experiență dinamică și interactivă, cu componente reutilizabile și gestionarea stării în aplicația client.
 Comunicarea între frontend și backend se realizează prin API-uri RESTful, unde frontend-ul trimite cereri la endpoint-urile expuse de backend pentru a procesa și a recupera date.
 Această structură modulară favorizează separarea preocupărilor, unde backend-ul se concentrează pe logica de afaceri și manipularea datelor, în timp ce frontend-ul se ocupă de interacțiunea cu utilizatorul.
