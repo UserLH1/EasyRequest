@@ -7,7 +7,6 @@
 Aplicația dezvoltată este un instrument destinat studenților pentru facilitarea creării de cereri personalizate. Utilizatorii completează informații precum detaliile personale, destinatarul, motivul solicitării, data, printre altele. Aceste date sunt utilizate de aplicație pentru a genera automat o cerere conform unui șablon predefinit. Un element cheie al aplicației este capacitatea de a păstra informațiile introduse pentru utilizări viitoare. Gestionarea datelor se face printr-un sistem eficient de fișiere, permițând importul și salvarea acestora, și utilizând structuri de date adecvate pentru organizare.
 
 ## Obiective
-- **Simplificarea Interacțiunii în Linia de Comandă**: Dezvoltarea unei CLI prietenoase cu implementarea de comenzi și opțiuni de ajutor intuitive.
 - **Automatizarea Generării Cererilor**: Accesul și personalizarea ușoară a șabloanelor prin comenzi simplificate și scripturi de completare automată.
 - **Gestionarea Eficientă a Datelor**: Capacitatea de a salva și încărca date personale printr-un sistem de fișiere, incluzând criptarea datelor sensibile.
 - **Export și Import de Date Simplificat**: Exportul cererilor în diferite formate și importul datelor din fișiere externe printr-o comandă directă.
