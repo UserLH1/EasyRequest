@@ -10,12 +10,19 @@ import java.io.IOException;
 public class GenerareCerereBursa {
 
     public void generareSiSalvareCerereDeBursa(Student student) {
-        String cerereDeBursaTemplate = "CERERE DE BURSĂ\n" +
-                "Nume: " + student.getNume() + "\n" +
-                "Prenume: " + student.getPrenume() + "\n" +
-                "Telefon: " + student.getTelefon() + "\n" +
-                "Anul de Studiu: " + student.getAnulDeStudiu() + "\n" +
-                "Număr Matricol: " + student.getNumarMatricol() + "\n";
+        String cerereDeBursaTemplate =
+                "Cerere de Bursă\n\n" +
+                        "Subsemnatul(a), " + student.getNume() + " " + student.getPrenume() + ",\n" +
+                        "Student(ă) la: " + student.getFacultate() + ",\n" +
+                        "Specializarea: " + student.getSpecializare() + ",\n" +
+                        "Anul de studiu: " + student.getAnulDeStudiu() + ",\n" +
+                        "Număr matricol: " + student.getNumarMatricol() + ",\n" +
+                        "Telefon de contact: " + student.getTelefon() + ",\n\n" +
+                        "Declar pe propria răspundere că solicit o bursă socială pe criteriul: \n" +
+                        student.getCriteriuBursa() + ".\n\n" +
+                        "Data: _________\n" +
+                        "Semnătura: _________\n";
+
 
         String numeFisier = "cerere_de_bursa.txt";
         String caleFisier = System.getProperty("user.dir") + "/" + numeFisier;

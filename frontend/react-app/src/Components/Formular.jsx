@@ -10,18 +10,19 @@ function getSteps() {
 
 export default function Formular() {
   const [activeStep, setActiveStep] = useState(0);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const steps = getSteps();
 
   const [studentData, setStudentData] = useState({
-    nume: " ",
-    prenume: " ",
-    telefon: " ",
-    facultate: " ",
-    specializare: " ",
-    anulDeStudiu: " ",
-    numarMatricol: " ",
+    nume: "",
+    prenume: "",
+    telefon: "",
+    facultate: "",
+    specializare: "",
+    anulDeStudiu: "",
+    numarMatricol: "",
   });
-  // console.log("Student data formular ", studentData);
+
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
       submitForm();
@@ -34,22 +35,8 @@ export default function Formular() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-    setStudentData({
-      nume: "",
-      prenume: "",
-      telefon: "",
-      facultate: "",
-      specializare: "",
-      anulDeStudiu: "",
-      numarMatricol: "",
-    });
-  };
-
   const submitForm = () => {
     console.log(studentData);
-    // toast.success("Formularul a fost trimis cu succes!");
     fetch("http://localhost:8080/student/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -62,11 +49,34 @@ export default function Formular() {
       .then((data) => {
         toast.success("Formularul a fost trimis cu succes!");
         console.log("Student added:", data);
-        handleReset(); // Optionally reset after submission
+        setIsSubmitted(true);
       })
       .catch((error) => {
         toast.error("Eroare la trimiterea formularului.");
         console.error("Error:", error);
+      });
+  };
+
+  const downloadCerereDeBursa = () => {
+    fetch("http://localhost:8080/student/downloadCerereDeBursa")
+      .then((response) => {
+        if (response.ok) {
+          return response.blob();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      .then((blob) => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "cerere_de_bursa.txt";
+        document.body.appendChild(a);
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
       });
   };
 
@@ -105,9 +115,28 @@ export default function Formular() {
         <Button disabled={activeStep === 0} onClick={handleBack}>
           Back
         </Button>
-        <Button variant="contained" color="primary" onClick={handleNext}>
-          {activeStep === steps.length - 1 ? "Submit" : "Next"}
-        </Button>
+        {activeStep === steps.length - 1 ? (
+          <div>
+            <Button variant="contained" color="primary" onClick={handleNext}>
+              Submit
+            </Button>
+            <br></br>
+            <br></br>
+            {isSubmitted && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={downloadCerereDeBursa}
+              >
+                Download Cerere
+              </Button>
+            )}
+          </div>
+        ) : (
+          <Button variant="contained" color="primary" onClick={handleNext}>
+            Next
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import React, { useEffect } from "react";
 import universities from "../universities.json";
 
 export default function FormularDetalii({ studentData, setStudentData }) {
+  const an = [1, 2, 3, 4];
   useEffect(() => {
     setStudentData((prevData) => ({
       ...prevData,
@@ -20,7 +21,6 @@ export default function FormularDetalii({ studentData, setStudentData }) {
     }));
   }, [setStudentData]);
 
-  // UseEffect that updates the specializations based on the selected faculty
   useEffect(() => {
     if (studentData.facultate) {
       const selectedSpecializations =
@@ -30,12 +30,11 @@ export default function FormularDetalii({ studentData, setStudentData }) {
       setStudentData((prevData) => ({
         ...prevData,
         specializari: selectedSpecializations,
-        specializare: "", // Reset the specialization selection
+        specializare: "",
       }));
     }
   }, [studentData.facultate, setStudentData]);
 
-  // Handlers for form changes
   const handleChange = (prop) => (event) => {
     setStudentData({ ...studentData, [prop]: event.target.value });
   };
@@ -85,15 +84,20 @@ export default function FormularDetalii({ studentData, setStudentData }) {
             ))}
         </Select>
       </FormControl>
-
-      <TextField
-        label="Anul de studiu"
-        value={studentData.anulDeStudiu || ""}
-        onChange={handleChange("anulDeStudiu")}
+      <Select
+        labelId="criteriu-bursa-label"
+        id="criteriu-bursa-select"
+        value={studentData.criteriuBursa || ""}
+        onChange={handleChange("criteriuBursa")}
         fullWidth
         margin="normal"
-      />
-
+      >
+        {an.map((an, index) => (
+          <MenuItem key={index} value={an}>
+            {an}
+          </MenuItem>
+        ))}
+      </Select>
       <TextField
         label="Număr Matricol"
         value={studentData.numarMatricol || ""}
